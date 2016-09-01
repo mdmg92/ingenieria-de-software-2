@@ -57,7 +57,7 @@ and open the template in the editor.
                     </h:panelGrid>
                 </p:panel>
                 <p:panel header="Agregar Productos" >
-                    <h:panelGrid columns="4" cellpadding="5">
+                    <h:panelGrid columns="3" cellpadding="5">
                         <h:outputLabel for="comProductos" value="Producto:" />
                         <h:selectOneMenu id="comProductos" 
                                          value="#{ventasController.producto}"
@@ -73,8 +73,7 @@ and open the template in the editor.
 
                         <h:outputLabel for="cantidad" value="Cantidad:" />
                         <p:spinner id="cantidad" value="#{ventasController.cantidad}" 
-                                   min="1" size="2" 
-                                   >
+                                   min="1" size="2">
                             <p:ajax event="change" update="cantidad" />
                         </p:spinner>
 
