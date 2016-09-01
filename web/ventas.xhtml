@@ -57,7 +57,7 @@ and open the template in the editor.
                     </h:panelGrid>
                 </p:panel>
                 <p:panel header="Agregar Productos" >
-                    <h:panelGrid columns="3" cellpadding="5">
+                    <h:panelGrid columns="4" cellpadding="5">
                         <h:outputLabel for="comProductos" value="Producto:" />
                         <h:selectOneMenu id="comProductos" 
                                          value="#{ventasController.producto}"
@@ -104,9 +104,14 @@ and open the template in the editor.
                     <p:column headerText="Total">
                         <h:outputText value="#{det.cantidadVendida * det.precioVenta}" />
                     </p:column>
+                    
+                    <p:column>
+                        <p:commandButton icon="ui-icon-close" title="Eliminar"
+                        actionListener="#{ventasController.eliminarDetalle(det)}" update="tablaDetalles" process="@this" />
+                    </p:column>
 
                     <!--                    <p:column selectionMode="single" style="width:16px;text-align:center"/>-->
-                    <f:facet name="footer">
+                    <f:facet name="footer" id="detallesTotal">
                         <h:panelGrid columns="1" style="text-align: right;" >
                             <h:outputText value="Cantidad: #{ventasController.ventaCantidad}" />
                             <h:outputText value="Total: #{ventasController.ventaTotal}" />

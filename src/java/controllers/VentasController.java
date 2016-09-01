@@ -190,6 +190,12 @@ public class VentasController implements Serializable {
         }
         return ultimoValor;
     }
+    
+    public void eliminarDetalle(DetallesFacturas det) {
+        this.detalleslista.remove(det);
+        this.ventaTotal -= (det.getCantidadVendida() * det.getPrecioVenta());
+        this.ventaCantidad -= det.getCantidadVendida();
+    }
 
     public int getVentaTotal() {
         return ventaTotal;
