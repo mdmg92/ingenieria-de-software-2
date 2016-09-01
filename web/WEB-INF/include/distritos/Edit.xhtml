@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DistritosEditDlg" widgetVar="DistritosEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditDistritosTitle}" closeOnEscape="true">
+
+            <h:form id="DistritosEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{distritosController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditDistritosLabel_idDistrito}" for="idDistrito" />
+                        <h:outputText id="idDistrito" value="#{distritosController.selected.idDistrito}" />
+
+                        <p:outputLabel value="#{myBundle.EditDistritosLabel_nombreDistrito}" for="nombreDistrito" />
+                        <p:inputTextarea rows="4" cols="30" id="nombreDistrito" value="#{distritosController.selected.nombreDistrito}" title="#{myBundle.EditDistritosTitle_nombreDistrito}" />
+
+                        <p:outputLabel value="#{myBundle.EditDistritosLabel_codigoVendedor}" for="codigoVendedor" />
+                        <p:selectOneMenu id="codigoVendedor" value="#{distritosController.selected.codigoVendedor}"  converter="vendedoresConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{vendedoresController.items}"
+                                           var="codigoVendedorItem"
+                                           itemValue="#{codigoVendedorItem}"
+                                           itemLabel="#{codigoVendedorItem.codigoVendedor.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{distritosController.save}" value="#{myBundle.Save}" update="display,:DistritosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('DistritosEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('DistritosEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

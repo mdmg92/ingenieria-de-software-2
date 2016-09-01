@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ClientesEditDlg" widgetVar="ClientesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditClientesTitle}" closeOnEscape="true">
+
+            <h:form id="ClientesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{clientesController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditClientesLabel_codigoCliente}" for="codigoCliente" />
+                        <h:outputText id="codigoCliente" value="#{clientesController.selected.codigoCliente}" />
+
+                        <p:outputLabel value="#{myBundle.EditClientesLabel_razonSocialCliente}" for="razonSocialCliente" />
+                        <p:inputTextarea rows="4" cols="30" id="razonSocialCliente" value="#{clientesController.selected.razonSocialCliente}" title="#{myBundle.EditClientesTitle_razonSocialCliente}" />
+
+                        <p:outputLabel value="#{myBundle.EditClientesLabel_direccionCliente}" for="direccionCliente" />
+                        <p:inputTextarea rows="4" cols="30" id="direccionCliente" value="#{clientesController.selected.direccionCliente}" title="#{myBundle.EditClientesTitle_direccionCliente}" />
+
+                        <p:outputLabel value="#{myBundle.EditClientesLabel_telefonoCliente}" for="telefonoCliente" />
+                        <p:inputTextarea rows="4" cols="30" id="telefonoCliente" value="#{clientesController.selected.telefonoCliente}" title="#{myBundle.EditClientesTitle_telefonoCliente}" />
+
+                        <p:outputLabel value="#{myBundle.EditClientesLabel_emailCliente}" for="emailCliente" />
+                        <p:inputTextarea rows="4" cols="30" id="emailCliente" value="#{clientesController.selected.emailCliente}" title="#{myBundle.EditClientesTitle_emailCliente}" />
+
+                        <p:outputLabel value="#{myBundle.EditClientesLabel_contacto}" for="contacto" />
+                        <p:inputTextarea rows="4" cols="30" id="contacto" value="#{clientesController.selected.contacto}" title="#{myBundle.EditClientesTitle_contacto}" />
+
+                        <p:outputLabel value="#{myBundle.EditClientesLabel_codigoDistrito}" for="codigoDistrito" />
+                        <p:selectOneMenu id="codigoDistrito" value="#{clientesController.selected.codigoDistrito}"  converter="distritosConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{distritosController.items}"
+                                           var="codigoDistritoItem"
+                                           itemValue="#{codigoDistritoItem}"
+                                           itemLabel="#{codigoDistritoItem.idDistrito.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{clientesController.save}" value="#{myBundle.Save}" update="display,:ClientesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ClientesEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('ClientesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ClientesListForm">
+
+        <p:panel header="#{myBundle.ListClientesTitle}">
+            <p:contextMenu id="ClientesDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('ClientesListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('ClientesListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('ClientesListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('ClientesListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.ClientesMenuItem_codigoDistrito}" icon="ui-icon-search"  actionListener="#{clientesController.prepareCodigoDistrito}" update=":DistritosViewForm" oncomplete="PF('DistritosViewDialog').show()" disabled="#{empty clientesController.selected.codigoDistrito}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{clientesController.items}"
+                         lazy="false"
+                         rowKey="#{item.codigoCliente}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{clientesController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{clientesController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.codigoCliente}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:ClientesDataTableContextMenu" listener="#{clientesController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:ClientesDataTableContextMenu" listener="#{clientesController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{clientesController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('ClientesListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.codigoCliente}" filterBy="#{item.codigoCliente}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListClientesTitle_codigoCliente}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.codigoCliente}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.razonSocialCliente}" filterBy="#{item.razonSocialCliente}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListClientesTitle_razonSocialCliente}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.razonSocialCliente}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.direccionCliente}" filterBy="#{item.direccionCliente}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListClientesTitle_direccionCliente}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.direccionCliente}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.telefonoCliente}" filterBy="#{item.telefonoCliente}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListClientesTitle_telefonoCliente}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.telefonoCliente}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.emailCliente}" filterBy="#{item.emailCliente}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListClientesTitle_emailCliente}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.emailCliente}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.contacto}" filterBy="#{item.contacto}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListClientesTitle_contacto}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.contacto}"/>
+                </p:column>
+
+                <!--
+                                    <p:column sortBy="#{item.codigoDistrito.idDistrito}" filterBy="#{item.codigoDistrito.idDistrito}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{myBundle.ListClientesTitle_codigoDistrito}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.codigoDistrito.idDistrito}"/>
+                                    </p:column>
+                -->
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{clientesController.prepareCreate}" update=":ClientesCreateForm" oncomplete="PF('ClientesCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":ClientesViewForm" oncomplete="PF('ClientesViewDialog').show()" disabled="#{empty clientesController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":ClientesEditForm" oncomplete="PF('ClientesEditDialog').show()" disabled="#{empty clientesController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{clientesController.delete}" update=":growl,datalist" disabled="#{empty clientesController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/WEB-INF/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

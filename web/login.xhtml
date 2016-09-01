@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <h:outputStylesheet library="css" name="pfcrud.css"/>
+        <h:outputScript library="scripts" name="pfcrud.js"/>
+    </h:head>
+
+    <h:body>
+
+        <p:growl id="growl" life="3000"/>
+
+        <p:layout fullPage="true">        
+            <p:layoutUnit position="south" size="60">
+
+                <ui:insert name="footer"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <div align="center">
+                    <ui:insert name="body"/>
+                    <h:form>
+                        <p:messages autoUpdate="true" showDetail="true" />
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:outputLabel for="txtUsuario" value="Usuario"/>
+                            <p:inputText id="txtUsuario" value="#{loginController.usuario.username}" required="true"/>
+
+                            <p:outputLabel for="txtClave" value="Contrasenha"/>
+                            <p:inputText id="txtClave" value="#{loginController.usuario.password}" type="password" required="true"/>
+
+                            <h:column />
+                            <p:commandButton icon="ui-icon-key" value="Iniciar Sesion" action="#{loginController.iniciarSesion()}" />
+                        </h:panelGrid>
+                    </h:form>
+                </div>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+
+</html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DistritosViewDlg" widgetVar="DistritosViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewDistritosTitle}" closeOnEscape="true">
+
+            <h:form id="DistritosViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{distritosController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewDistritosLabel_idDistrito}"/>
+                        <h:outputText value="#{distritosController.selected.idDistrito}" title="#{myBundle.ViewDistritosTitle_idDistrito}"/>
+
+                        <h:outputText value="#{myBundle.ViewDistritosLabel_nombreDistrito}"/>
+                        <h:outputText value="#{distritosController.selected.nombreDistrito}" title="#{myBundle.ViewDistritosTitle_nombreDistrito}"/>
+
+                        <h:outputText value="#{myBundle.ViewDistritosLabel_codigoVendedor}"/>
+                        <h:outputText value="#{distritosController.selected.codigoVendedor.codigoVendedor}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('DistritosViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

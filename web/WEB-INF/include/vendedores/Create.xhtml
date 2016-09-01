@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="VendedoresCreateDlg" widgetVar="VendedoresCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreateVendedoresTitle}" closeOnEscape="true">
+
+            <h:form id="VendedoresCreateForm">
+
+                <h:panelGroup id="display" rendered="#{vendedoresController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{myBundle.CreateVendedoresLabel_nombreVendedor}" for="nombreVendedor" />
+                        <p:inputTextarea rows="4" cols="30" id="nombreVendedor" value="#{vendedoresController.selected.nombreVendedor}" title="#{myBundle.CreateVendedoresTitle_nombreVendedor}" />
+
+                        <p:outputLabel value="#{myBundle.CreateVendedoresLabel_apellidoVendedor}" for="apellidoVendedor" />
+                        <p:inputTextarea rows="4" cols="30" id="apellidoVendedor" value="#{vendedoresController.selected.apellidoVendedor}" title="#{myBundle.CreateVendedoresTitle_apellidoVendedor}" />
+
+                        <p:outputLabel value="#{myBundle.CreateVendedoresLabel_fechaIngreso}" for="fechaIngreso" />
+                        <p:calendar id="fechaIngreso" pattern="MM/dd/yyyy" value="#{vendedoresController.selected.fechaIngreso}" title="#{myBundle.CreateVendedoresTitle_fechaIngreso}"  showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.CreateVendedoresLabel_sueldoBasico}" for="sueldoBasico" />
+                        <p:inputText id="sueldoBasico" value="#{vendedoresController.selected.sueldoBasico}" title="#{myBundle.CreateVendedoresTitle_sueldoBasico}"/>
+
+                        <p:outputLabel value="#{myBundle.CreateVendedoresLabel_tipoVendedor}" for="tipoVendedor" />
+                        <p:inputTextarea rows="4" cols="30" id="tipoVendedor" value="#{vendedoresController.selected.tipoVendedor}" title="#{myBundle.CreateVendedoresTitle_tipoVendedor}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{vendedoresController.saveNew}" value="#{myBundle.Save}" update="display,:VendedoresListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('VendedoresCreateDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('VendedoresCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

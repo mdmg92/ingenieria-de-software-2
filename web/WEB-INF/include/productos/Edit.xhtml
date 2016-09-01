@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ProductosEditDlg" widgetVar="ProductosEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditProductosTitle}" closeOnEscape="true">
+
+            <h:form id="ProductosEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{productosController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditProductosLabel_idProducto}" for="idProducto" />
+                        <h:outputText id="idProducto" value="#{productosController.selected.idProducto}" />
+
+                        <p:outputLabel value="#{myBundle.EditProductosLabel_descripcionProducto}" for="descripcionProducto" />
+                        <p:inputTextarea rows="4" cols="30" id="descripcionProducto" value="#{productosController.selected.descripcionProducto}" title="#{myBundle.EditProductosTitle_descripcionProducto}" />
+
+                        <p:outputLabel value="#{myBundle.EditProductosLabel_precioActual}" for="precioActual" />
+                        <p:inputText id="precioActual" value="#{productosController.selected.precioActual}" title="#{myBundle.EditProductosTitle_precioActual}"/>
+
+                        <p:outputLabel value="#{myBundle.EditProductosLabel_unidadMedida}" for="unidadMedida" />
+                        <p:inputTextarea rows="4" cols="30" id="unidadMedida" value="#{productosController.selected.unidadMedida}" title="#{myBundle.EditProductosTitle_unidadMedida}" />
+
+                        <p:outputLabel value="#{myBundle.EditProductosLabel_stockActual}" for="stockActual" />
+                        <p:inputText id="stockActual" value="#{productosController.selected.stockActual}" title="#{myBundle.EditProductosTitle_stockActual}"/>
+
+                        <p:outputLabel value="#{myBundle.EditProductosLabel_stockMinimo}" for="stockMinimo" />
+                        <p:inputText id="stockMinimo" value="#{productosController.selected.stockMinimo}" title="#{myBundle.EditProductosTitle_stockMinimo}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{productosController.save}" value="#{myBundle.Save}" update="display,:ProductosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ProductosEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('ProductosEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{myBundle.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="AddVentasForm">
+                <p:messages autoUpdate="true" showDetail="true" />
+                <p:panel header="Realizar venta">
+                    <h:panelGrid columns="4" cellpadding="5">
+                        <p:outputLabel for="numerofactura" value="Nro de Factura" />
+                        <h:outputText id="numerofactura" 
+                                      value="#{ventasController.nroVenta}"/>
+
+                        <h:outputLabel for="fechaVenta" value="Fecha:" />
+                        <h:outputText id="fechaVenta" 
+                                      value="#{ventasController.fechaVenta}" />    
+
+                        <p:outputLabel for="comClientes" value="Cliente" />
+                        <h:selectOneMenu value="#{ventasController.cliente}"
+                                         id="comClientes"
+                                         converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" 
+                                          noSelectionOption="true" />
+                            <f:selectItems value="#{ventasController.clientelista}" 
+                                           var="cliente" 
+                                           itemLabel="#{cliente.razonSocialCliente}" 
+                                           itemValue="#{cliente}" />
+                            <p:ajax event="change" update="@this" />
+                        </h:selectOneMenu>
+
+                        <p:outputLabel for="comVendedores" value="Vendedor" />
+                        <h:selectOneMenu value="#{ventasController.vendedor}" 
+                                         id="comVendedores"
+                                         converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" 
+                                          noSelectionOption="true" />
+                            <f:selectItems value="#{ventasController.vendedorlista}" 
+                                           var="vendedor" 
+                                           itemLabel="#{vendedor.apellidoVendedor} #{vendedor.nombreVendedor}" 
+                                           itemValue="#{vendedor}" />
+                            <p:ajax event="change" update="@this" />
+                        </h:selectOneMenu>
+
+                    </h:panelGrid>
+                </p:panel>
+                <p:panel header="Agregar Productos" >
+                    <h:panelGrid columns="4" cellpadding="5">
+                        <h:outputLabel for="comProductos" value="Producto:" />
+                        <h:selectOneMenu id="comProductos" 
+                                         value="#{ventasController.producto}"
+                                         converter="omnifaces.SelectItemsConverter" >
+                            <f:selectItem itemLabel="Seleccione" itemValue="" 
+                                          noSelectionOption="true" />
+                            <f:selectItems value="#{ventasController.productosLista}" 
+                                           var="producto" 
+                                           itemLabel="#{producto.descripcionProducto}" 
+                                           itemValue="#{producto}" />
+                            <p:ajax event="change" update="@this" />
+                        </h:selectOneMenu>
+
+                        <h:outputLabel for="cantidad" value="Cantidad:" />
+                        <p:spinner id="cantidad" value="#{ventasController.cantidad}" 
+                                   min="1" size="2" 
+                                   >
+                            <p:ajax event="change" update="cantidad" />
+                        </p:spinner>
+
+                        <p:commandButton actionListener="#{ventasController.agregarProducto()}" 
+                                         id="addProducto" value="Agregar Producto" 
+                                         update="tablaDetalles"
+                                         process="@this"/>
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:dataTable id="tablaDetalles"
+                             value="#{ventasController.detalleslista}"
+                             var="det"
+                             selection="#{ventasController.detalleslista}"
+                             rowKey="#{det}">
+                    <p:column headerText="Producto">
+                        <h:outputLabel value="#{det.productos.descripcionProducto}" />
+                    </p:column>
+
+                    <p:column headerText="Precio">
+                        <h:outputLabel value="#{det.precioVenta}" />
+                    </p:column>
+
+                    <p:column headerText="Cantidad">
+                        <h:outputLabel value="#{det.cantidadVendida}" />
+                    </p:column>
+
+                    <p:column headerText="Total">
+                        <h:outputText value="#{det.cantidadVendida * det.precioVenta}" />
+                    </p:column>
+
+                    <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                    <f:facet name="footer">
+                        <p:commandButton process="tablaDetalles" update="tablaDetalles" value="Borrar" action="#{ventasController.quitarProducto(det)}" />
+                    </f:facet>
+                </p:dataTable>
+
+                <p:panel>
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:commandButton id="addVenta" type="submit" 
+                                         actionListener="#{ventasController.guardarVenta()}"
+                                         action="ventas?faces-redirect=true"
+                                         value="Guardar venta" process="@form" immediate="true" ajax="false" />
+                        <p:commandButton id="delVenta" 
+                                         action="#{ventasController.cancelarVenta()}"  
+                                         value="Cancelar venta" ajax="false" immediate="true" />
+                        <p:commandButton id="genReporte" type="submit" 
+                                         action="#{ventasController.generarReporte()}" 
+                                         value="Imprimir factura" ajax="false" immediate="true" />
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
