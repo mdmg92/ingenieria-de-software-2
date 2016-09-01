@@ -59,6 +59,8 @@ public class VentasController implements Serializable {
     private String fechaVenta;
     private Connection con = null;
     private EntityManager em;
+    private int ventaTotal = 0;
+    private int ventaCantidad = 0;
 
     @EJB
     private VendedoresFacade vendedorEJB = new VendedoresFacade();
@@ -109,6 +111,8 @@ public class VentasController implements Serializable {
         det.setCantidadVendida(cantidad);
         det.setPrecioVenta(precio);
         this.detalleslista.add(det);
+        this.ventaTotal += (det.getCantidadVendida() * det.getPrecioVenta());
+        this.ventaCantidad += det.getCantidadVendida();
     }
 
     public void quitarProducto(DetallesFacturas det) {
@@ -171,10 +175,6 @@ public class VentasController implements Serializable {
         return redirect;
     }
 
-    public void generarReporte() {
-
-    }
-
     public int obtenerNroFactura() {
         int ultimoValor = 0;
         try {
@@ -189,6 +189,22 @@ public class VentasController implements Serializable {
             System.out.println("Error al obtener secuencia -->" + ex.getMessage());
         }
         return ultimoValor;
+    }
+
+    public int getVentaTotal() {
+        return ventaTotal;
+    }
+
+    public void setVentaTotal(int ventaTotal) {
+        this.ventaTotal = ventaTotal;
+    }
+
+    public int getVentaCantidad() {
+        return ventaCantidad;
+    }
+
+    public void setVentaCantidad(int ventaCantidad) {
+        this.ventaCantidad = ventaCantidad;
     }
 
     public FacturasFacadeLocal getFacturasEJB() {

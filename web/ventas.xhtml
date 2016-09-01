@@ -106,9 +106,12 @@ and open the template in the editor.
                         <h:outputText value="#{det.cantidadVendida * det.precioVenta}" />
                     </p:column>
 
-                    <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                    <!--                    <p:column selectionMode="single" style="width:16px;text-align:center"/>-->
                     <f:facet name="footer">
-                        <p:commandButton process="tablaDetalles" update="tablaDetalles" value="Borrar" action="#{ventasController.quitarProducto(det)}" />
+                        <h:panelGrid columns="1" style="text-align: right;" >
+                            <h:outputText value="Cantidad: #{ventasController.ventaCantidad}" />
+                            <h:outputText value="Total: #{ventasController.ventaTotal}" />
+                        </h:panelGrid>
                     </f:facet>
                 </p:dataTable>
 
@@ -121,9 +124,6 @@ and open the template in the editor.
                         <p:commandButton id="delVenta" 
                                          action="#{ventasController.cancelarVenta()}"  
                                          value="Cancelar venta" ajax="false" immediate="true" />
-                        <p:commandButton id="genReporte" type="submit" 
-                                         action="#{ventasController.generarReporte()}" 
-                                         value="Imprimir factura" ajax="false" immediate="true" />
                     </h:panelGrid>
                 </p:panel>
             </h:form>
