@@ -27,13 +27,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 /**
  *
@@ -58,7 +53,6 @@ public class VentasController implements Serializable {
     private String nroVenta;
     private String fechaVenta;
     private Connection con = null;
-    private EntityManager em;
     private int ventaTotal = 0;
     private int ventaCantidad = 0;
 
@@ -110,7 +104,6 @@ public class VentasController implements Serializable {
         det.setProductos(this.producto);
         det.setCantidadVendida(cantidad);
         det.setPrecioVenta(precio);
-        int index = 0;
 
         if (!detalleslista.isEmpty()) {
             for (DetallesFacturas detalle : detalleslista) {
