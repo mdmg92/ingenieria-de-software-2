@@ -110,9 +110,25 @@ public class VentasController implements Serializable {
         det.setProductos(this.producto);
         det.setCantidadVendida(cantidad);
         det.setPrecioVenta(precio);
+        int index = 0;
+
+        if (!detalleslista.isEmpty()) {
+            for (DetallesFacturas detalle : detalleslista) {
+                if (detalle.getProductos() == det.getProductos()) {
+                    det.setCantidadVendida(det.getCantidadVendida() + detalle.getCantidadVendida());
+                    det.setPrecioVenta(det.getPrecioVenta() + detalle.getPrecioVenta());
+                    detalleslista.remove(detalle);
+                    this.ventaTotal -= (detalle.getCantidadVendida() * detalle.getPrecioVenta());
+                    this.ventaCantidad -= detalle.getCantidadVendida();
+                    break;
+                }
+            }
+        }
+
         this.detalleslista.add(det);
         this.ventaTotal += (det.getCantidadVendida() * det.getPrecioVenta());
         this.ventaCantidad += det.getCantidadVendida();
+        det = new DetallesFacturas();
     }
 
     public void quitarProducto(DetallesFacturas det) {
@@ -170,7 +186,7 @@ public class VentasController implements Serializable {
         if (!detalleslista.isEmpty() && detalleslista != null) {
             for (DetallesFacturas detalleFactura : detalleslista) {
                 detalleEJB.remove(detalleFactura);
-                this.detalleslista = new ArrayList<DetallesFacturas>(); 
+                this.detalleslista = new ArrayList<DetallesFacturas>();
             }
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Venta cancelada", " La venta ha sido cancelada!"));
@@ -192,11 +208,19 @@ public class VentasController implements Serializable {
         }
         return ultimoValor;
     }
-    
+
     public void eliminarDetalle(DetallesFacturas det) {
         this.detalleslista.remove(det);
         this.ventaTotal -= (det.getCantidadVendida() * det.getPrecioVenta());
         this.ventaCantidad -= det.getCantidadVendida();
+    }
+
+    public boolean validarVenta() {
+        if (this.cliente != null && this.vendedor != null && !this.detalleslista.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public int getVentaTotal() {
