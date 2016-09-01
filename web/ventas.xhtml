@@ -126,7 +126,8 @@ and open the template in the editor.
                                          action="ventas?faces-redirect=true"
                                          value="Guardar venta" process="@form" immediate="true" ajax="false" />
                         <p:commandButton id="delVenta" 
-                                         action="#{ventasController.cancelarVenta()}"  
+                                         actionListener="#{ventasController.cancelarVenta()}"
+                                         action="ventas?faces-redirect=true"
                                          value="Cancelar venta" ajax="false" immediate="true" />
                     </h:panelGrid>
                 </p:panel>

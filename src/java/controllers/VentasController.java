@@ -157,22 +157,24 @@ public class VentasController implements Serializable {
         }
 
         FacesContext.getCurrentInstance()
-                .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venta guardada", "Venta guardada!"));
+                .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venta guardada", "La venta ha sido guardada!"));
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
     }
 
-    public String cancelarVenta() {
+    public void cancelarVenta() {
         if (factura != null) {
             facturasEJB.remove(factura);
+            this.cliente = new Clientes();
+            this.vendedor = new Vendedores();
         }
         if (!detalleslista.isEmpty() && detalleslista != null) {
             for (DetallesFacturas detalleFactura : detalleslista) {
                 detalleEJB.remove(detalleFactura);
+                this.detalleslista = new ArrayList<DetallesFacturas>(); 
             }
         }
-        String redirect = "/ventas";
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Venta cancelada", "Venta cancelada!"));
-        return redirect;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Venta cancelada", " La venta ha sido cancelada!"));
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
     }
 
     public int obtenerNroFactura() {
