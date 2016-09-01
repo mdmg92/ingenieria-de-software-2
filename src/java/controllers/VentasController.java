@@ -136,6 +136,11 @@ public class VentasController implements Serializable {
     }
 
     public void guardarVenta() {
+        if (!validarVenta()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Venta incorrecta", " Parametros incorrectos!"));
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+            return;
+        }
         this.factura.setNumeroFactura(this.nroVenta);
         this.factura.setCodigoCliente(this.cliente);
         this.factura.setCodigoVendedor(this.vendedor);
@@ -182,6 +187,8 @@ public class VentasController implements Serializable {
             facturasEJB.remove(factura);
             this.cliente = new Clientes();
             this.vendedor = new Vendedores();
+            this.ventaCantidad = 0;
+            this.ventaTotal = 0;
         }
         if (!detalleslista.isEmpty() && detalleslista != null) {
             for (DetallesFacturas detalleFactura : detalleslista) {
